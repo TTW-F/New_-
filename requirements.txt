@@ -1,0 +1,26 @@
+# LangChain RAG 框架 (最新版本 0.3.x)
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+langchain-openai>=0.2.0  # 用于 ChatOpenAI（支持 DeepSeek 等 OpenAI 兼容 API）
+
+
+# 向量数据库
+faiss-cpu>=1.7.4  # 或使用 faiss-gpu 并根据 CUDA 版本
+
+# FastAPI
+fastapi>=0.100.0
+pydantic>=2.0.0
+
+# 数据库
+pymysql>=1.1.0
+sqlalchemy>=2.0.0
+neo4j-driver>=5.0.0
+
+# 爬虫和数据解析
+lxml>=4.9.0  # HTML/XML 解析
+requests>=2.31.0
+
+# 工具库
+python-dotenv>=1.0.0  # 环境变量管理
+tqdm>=4.66.0  # 进度条显示

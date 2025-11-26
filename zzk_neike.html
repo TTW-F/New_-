@@ -1,0 +1,533 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title> 内科症状-症状查询-寻医问药-xywy.com</title>
+
+    <meta name='keywords' content="按科室查询症状" />
+    <meta name='description' content="寻医问药症状频道按科室查询症状列表，为您提供内科，外科，妇科，儿科，男科，肿瘤科，皮肤科，五官科，精神科等科室症状查询。"/>
+
+    <link type="text/css" rel="stylesheet" href="//static.wkimg.com/common/ui/base/reset.css" />
+    <link rel="stylesheet" type="text/css" href="//pub1.wkimg.com/common_login/css/common_login_v2.css" />
+    <link rel="stylesheet" type="text/css" href="//css.static.xywy.com/zhengzhuang/css/main.css" />
+    <script type="text/javascript" src="//static.wkimg.com/common/lib/jquery.min.js"></script>
+<script src="//stat.xywy.com/a.js" language="JavaScript"></script>
+<script src="//stat.xywy.com/odm.js" language="JavaScript"></script>
+</head>
+
+<body>
+
+<!--<div class="wrap" id="topAd">-->
+<!--<div class="top-ad clearfix">-->
+<!--<div class="topad1 fl mr15"><a href="#" target="_blank"><img src="//img.static.xywy.com/zhengzhuang/images/topad1.jpg" width="160" height="75" /></a></div>-->
+<!--<div class="topad2 fl "><a href="#" target="_blank"><img src="//img.static.xywy.com/zhengzhuang/images/topad2.jpg" width="630" height="75" /></a></div>-->
+<!--<div class="topad3 fr"><a href="#" target="_blank"><img src="//img.static.xywy.com/zhengzhuang/images/topad3.jpg" width="160" height="75" /></a></div>-->
+<!--</div>-->
+<!--</div>-->
+
+<script src="//a.xywy.com/word.js"></script>
+<script>
+    var zkk_parent_depart   = 0;
+    var zzk_depart      =  0;
+    var zzk_id          = 0;
+</script>
+<div id="header" class="wrap mt10"> <script src="//js.static.xywy.com/y_index/js/2022/header.min.js" charset="gbk"></script>
+    <div class="public-hd clearfix">
+        <div class="fl public-slogo">
+            <div class="fl j-logo"><a href="http://www.xywy.com/" target="_blank"><img src="//img.static.xywy.com/xy_s_public/images/xy_s_logo.gif" width="132" height="46" alt="" /></a></div>
+            <div class="fl t9999 j-descripe"><a href="http://zzk.xywy.com"  target="_blank">症状百科</a></div>
+        </div>
+        <div class="fr public-hd-nav" id="common-hd-nav"> 
+            <style type="text/css">
+                body,ul,li,a,div{margin:0;padding:0;}
+                ul,li{list-style:none;}
+                a{ text-decoration:none; outline: none; }
+                .common-hd-nav a{display:block;height:38px;font-size:12px;}
+                .clearfix:after{ visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }.clearfix{*zoom:1;}
+                .common-hd-nav li{width:125px;float:left;dispaly:inline;margin:24px 0 0 15px;position:relative;text-indent:0;background:url(//img.static.xywy.com/channel-public/images/nav_ico_new_v2.gif) no-repeat;}
+                .common-hd-nav .common-hd-health-nav{background-position:0 0;}
+                .common-hd-nav .common-hd-user-nav{background-position:0 -44px;}
+                .common-hd-nav .common-hd-drug-nav{background-position:0 -88px;}
+                .common-hd-nav .common-hd-doctor-nav{background-position:0 -132px;}
+                .common-hd-health-nav a,.common-hd-user-nav a,.common-hd-drug-nav a,.common-hd-doctor-nav a{text-indent:-9999px;background:url(//img.static.xywy.com/channel-public/images/nav_arrow_down.gif) 110px 17px no-repeat;}
+                .common-hd-health-nav .common-hd-arrow-up,.common-hd-user-nav .common-hd-arrow-up,.common-hd-drug-nav .common-hd-arrow-up,.common-hd-doctor-nav .common-hd-arrow-up{background:url(//img.static.xywy.com/channel-public/images/nav_arrow_up.gif) 110px 17px no-repeat;}
+                .common-hd-drop-down{display:none;width:99px;position:absolute;top:-8px;left:24px;border:1px solid #28b4c3;border-bottom-left-radius:5px;border-bottom-right-radius:5px;background:#fff;box-shadow:0 2px 5px 2px rgba(40,180,195,.2)}
+                .common-hd-nav span{width:38px;height:38px;position:absolute;left:-1px;top:-39px;display:block;background:url(//img.static.xywy.com/channel-public/images/item_nav_logo_v2.gif) no-repeat;z-index:9999;}
+                .common-hd-drop-down a{display:block;height:24px;line-height:24px;padding-left:20px;color:#666;text-indent:0;}
+                .common-hd-drop-down a:hover{color:#fff;text-decoration:none;background:#28b4c3;}
+                .common-hd-health-service-menu,.common-hd-user-service-menu,.common-hd-drug-service-menu,.common-hd-doctor-service-menu{position:absolute;}
+                .common-hd-health-service-menu span{background-position:0 1px;}
+                .common-hd-user-service-menu span{background-position:0 -47px;}
+                .common-hd-drug-service-menu span{background-position:0 -95px;}
+                .common-hd-doctor-service-menu span{background-position:0 -144px;}
+            </style>
+            <ul class="common-hd-nav fr">
+                <li class="common-hd-health-nav">
+                    <a href="javascript:void(0)" target="_self">健康知识</a>
+                    <div class="common-hd-health-service-menu">
+                        <span></span>
+                        <div class="common-hd-drop-down" style="display: none;">
+                            <a target="_blank" href="http://jib.xywy.com/">疾病百科</a>
+                            <a target="_blank" href="http://zzk.xywy.com/">症状百科</a>
+                            <a target="_blank" href="http://jck.xywy.com/">检查项目</a>
+                            </div>
+                    </div>
+                </li>
+                <li class="common-hd-user-nav">
+                    <a href="javascript:void(0)" target="_self">用户服务</a>
+                    <div class="common-hd-user-service-menu">
+                        <span></span>
+                        <div class="common-hd-drop-down" style="display: none;">
+                            <a target="_blank" href="http://club.xywy.com/">有问必答</a>
+                                </div>
+                    </div>
+                </li>
+                <li class="common-hd-drug-nav">
+                    <a href="javascript:void(0)" target="_self">药品导航</a>
+                    <div class="common-hd-drug-service-menu">
+                        <span></span>
+                        <div class="common-hd-drop-down" style="display: none;">
+                            <a href="http://y.wksc.com/" target="_blank">药品网</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="common-hd-doctor-nav">
+                    <a href="javascript:void(0)" target="_self">医生服务</a>
+                    <div class="common-hd-doctor-service-menu">
+                        <span></span>
+                        <div class="common-hd-drop-down" style="display: none;">
+                            <a href="http://club.xywy.com/doctorhome/" onmousedown="__sendClickOdm('pc_ucenter', this, ':rightnav+serviceplatform')target="_blank">医平台首页</a>
+                               </div>
+                    </div>
+                </li>
+            </ul>
+            <script>
+                $('#common-hd-nav').find('li').bind({
+                    mouseenter: function(){
+                        $(this).children('a').addClass('common-hd-arrow-up').end().find('.common-hd-drop-down').show();
+                    },
+                    mouseleave: function(){
+                        $(this).children('a').removeClass('common-hd-arrow-up').end().find('.common-hd-drop-down').hide();
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+<div id="main_nav" class="public-main-nav">
+    <div class="wrap clearfix">
+        <ul class="fl nav-list clearfix">
+            <li class="nav-list-home">
+                <a class=" nav-index db " href="/" target="_blank">首页</a>
+            </li>
+            <li class="current">
+                <a class=" nav-ks db" href="/p/neike.html" target="_blank">按科室查找</a>
+            </li>
+            <li class="">
+                <a class=" nav-bw db" href="/p/toubu.html" target="_blank">按部位查找</a>
+            </li>
+            <li class="">
+                <a class=" nav-zm db" href="/p/a.html" target="_blank">按字母查找</a>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<div class="wrap mt10 nav-bar">
+    <a href="/" target="_blank" >症状百科</a><span>
+ &gt; <span>内科</span>
+</div>
+
+
+<div class="wrap mt10 clearfix graydeep">
+<div class="jblist-nav fl">
+    <ul class="clearfix jbk-nav-list bor f14">
+
+                
+        <li class="pr">
+            <a href="/p/neike.html" class="" target="_blank">内科</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/huxineike.html" target="_blank">呼吸内科</a></li>
+                                                    <li><a  href="/p/xiaohuaneike.html" target="_blank">消化内科</a></li>
+                                                    <li><a  href="/p/miniaoneike.html" target="_blank">泌尿内科</a></li>
+                                                    <li><a  href="/p/xinneike.html" target="_blank">心内科</a></li>
+                                                    <li><a  href="/p/xueyeke.html" target="_blank">血液科</a></li>
+                                                    <li><a  href="/p/neifenmike.html" target="_blank">内分泌科</a></li>
+                                                    <li><a  href="/p/shenjingneike.html" target="_blank">神经内科</a></li>
+                                                    <li><a  href="/p/shenneike.html" target="_blank">肾内科</a></li>
+                                                    <li><a  href="/p/yichuanbingke.html" target="_blank">遗传病科</a></li>
+                                                    <li><a  href="/p/fengshimianyike.html" target="_blank">风湿免疫科</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/waike.html" class="" target="_blank">外科</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/ganranke.html" target="_blank">感染科</a></li>
+                                                    <li><a  href="/p/puwaike.html" target="_blank">普外科</a></li>
+                                                    <li><a  href="/p/guwaike.html" target="_blank">骨外科</a></li>
+                                                    <li><a  href="/p/shenjingwaike.html" target="_blank">神经外科</a></li>
+                                                    <li><a  href="/p/xinxiongwaike.html" target="_blank">心胸外科</a></li>
+                                                    <li><a  href="/p/gandanwaike.html" target="_blank">肝胆外科</a></li>
+                                                    <li><a  href="/p/miniaowaike.html" target="_blank">泌尿外科</a></li>
+                                                    <li><a  href="/p/shaoshangke.html" target="_blank">烧伤科</a></li>
+                                                    <li><a  href="/p/gangchangke.html" target="_blank">肛肠科</a></li>
+                                                    <li><a  href="/p/zhengxingmeirongke.html" target="_blank">整形美容科</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/fuchanke.html" class="" target="_blank">妇产科</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/fuke.html" target="_blank">妇科</a></li>
+                                                    <li><a  href="/p/chanke.html" target="_blank">产科</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/chuanranke.html" class="" target="_blank">传染科</a>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/shengzhijiankang.html" class="" target="_blank">生殖健康</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/buyunbuyu.html" target="_blank">不孕不育</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/nanke.html" class="" target="_blank">男科</a>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/pifuxingbingke.html" class="" target="_blank">皮肤性病科</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/pifuke.html" target="_blank">皮肤科</a></li>
+                                                    <li><a  href="/p/xingbingke.html" target="_blank">性病科</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/zhongyike.html" class="" target="_blank">中医科</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/zhongyizonghe.html" target="_blank">中医综合</a></li>
+                                                    <li><a  href="/p/zhongyigushangke.html" target="_blank">中医骨伤科</a></li>
+                                                    <li><a  href="/p/zhongyililiaoke.html" target="_blank">中医理疗科</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/zhongxiyijieheke.html" class="" target="_blank">中西医结合科</a>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/wuguanke.html" class="" target="_blank">五官科</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/yanke.html" target="_blank">眼科</a></li>
+                                                    <li><a  href="/p/kouqiangke.html" target="_blank">口腔科</a></li>
+                                                    <li><a  href="/p/erbihouke.html" target="_blank">耳鼻喉科</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/jingshenke.html" class="" target="_blank">精神科</a>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/xinlike.html" class="" target="_blank">心理科</a>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/erke.html" class="" target="_blank">儿科</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/erkezonghe.html" target="_blank">儿科综合</a></li>
+                                                    <li><a  href="/p/xiaoerwaike.html" target="_blank">小儿外科</a></li>
+                                                    <li><a  href="/p/xiaoerneike.html" target="_blank">小儿内科</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/yingyangke.html" class="" target="_blank">营养科</a>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/zhongliuke.html" class="" target="_blank">肿瘤科</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/zhongliuneike.html" target="_blank">肿瘤内科</a></li>
+                                                    <li><a  href="/p/zhongliuwaike.html" target="_blank">肿瘤外科</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/qitakeshi.html" class="" target="_blank">其他科室</a>
+                        <ul class="jbk-sed-menu bor pa none f12" style="display: none;">
+                                                    <li><a  href="/p/yaopinke.html" target="_blank">药品科</a></li>
+                                                    <li><a  href="/p/zhongzhengjianhu.html" target="_blank">重症监护</a></li>
+                                                    <li><a  href="/p/fuzhujiancha.html" target="_blank">辅助检查</a></li>
+                                                    <li><a  href="/p/kangfuke.html" target="_blank">康复科</a></li>
+                                                    <li><a  href="/p/liliaoke.html" target="_blank">理疗科</a></li>
+                                                    <li><a  href="/p/qitazonghe.html" target="_blank">其他综合</a></li>
+                                                    <li><a  href="/p/baojianyangsheng.html" target="_blank">保健养生</a></li>
+                            </ul>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/jizhenke.html" class="" target="_blank">急诊科</a>
+                    </li>
+                
+        <li class="pr">
+            <a href="/p/tijianke.html" class="" target="_blank">体检科</a>
+                    </li>
+        
+
+
+    </ul>
+</div>
+<div class="jblist-main bor fr">
+<div class="jblist-con">
+<div class="ks-ill-box pb20 bor-dash">
+    <div class="ks-ill-tit clearfix">
+        <strong class="fb f14">内科常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                       <li><a href="/444_gaishu.html" target="_blank" title="齿轮样强直">齿轮样强直</a></li>
+                        <li><a href="/536_gaishu.html" target="_blank" title="大便习惯改变">大便习惯改变</a></li>
+                        <li><a href="/1014_gaishu.html" target="_blank" title="肺通气一血流比例失调">肺通气一血流...</a></li>
+                        <li><a href="/1537_gaishu.html" target="_blank" title="红细胞寿命缩短">红细胞寿命缩...</a></li>
+                        <li><a href="/2634_gaishu.html" target="_blank" title="麻痹性肠梗阻">麻痹性肠梗阻</a></li>
+                        <li><a href="/2941_gaishu.html" target="_blank" title="尿道刺痒">尿道刺痒</a></li>
+                        <li><a href="/3208_gaishu.html" target="_blank" title="皮肤痛">皮肤痛</a></li>
+                        <li><a href="/4340_gaishu.html" target="_blank" title="Todd瘫痪（遗留暂时性局部肢体的瘫痪或无力）">Todd瘫痪（遗...</a></li>
+                        <li><a href="/4792_gaishu.html" target="_blank" title="无腋毛">无腋毛</a></li>
+                        <li><a href="/5751_gaishu.html" target="_blank" title="胰酶分泌或排出量降低">胰酶分泌或排...</a></li>
+                        <li><a href="/5936_gaishu.html" target="_blank" title="幽门狭窄">幽门狭窄</a></li>
+                        <li><a href="/6646_gaishu.html" target="_blank" title="外寒内热">外寒内热</a></li>
+            </ul>
+</div>
+   <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/huxineike.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/huxineike.html" target="_blank">呼吸内科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/6485_gaishu.html" target="_blank" title="扁桃体发炎">扁桃体发炎</a></li>
+                        <li><a href="/195_gaishu.html" target="_blank" title="鼻翼扇动">鼻翼扇动</a></li>
+                        <li><a href="/6618_gaishu.html" target="_blank" title="白痰">白痰</a></li>
+                        <li><a href="/250_gaishu.html" target="_blank" title="变应性咳嗽">变应性咳嗽</a></li>
+                        <li><a href="/436_gaishu.html" target="_blank" title="持续性咳嗽">持续性咳嗽</a></li>
+                        <li><a href="/329_gaishu.html" target="_blank" title="岔气">岔气</a></li>
+                        <li><a href="/487_gaishu.html" target="_blank" title="喘息">喘息</a></li>
+                        <li><a href="/407_gaishu.html" target="_blank" title="潮式呼吸">潮式呼吸</a></li>
+                        <li><a href="/700_gaishu.html" target="_blank" title="冬春季的慢性咳嗽咳痰和喘息">冬春季的慢性...</a></li>
+                        <li><a href="/731_gaishu.html" target="_blank" title="端坐呼吸">端坐呼吸</a></li>
+                        <li><a href="/6518_gaishu.html" target="_blank" title="大咯血">大咯血</a></li>
+                        <li><a href="/6669_gaishu.html" target="_blank" title="大便黑绿色">大便黑绿色</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/xiaohuaneike.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/xiaohuaneike.html" target="_blank">消化内科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/8_gaishu.html" target="_blank" title="嗳腐">嗳腐</a></li>
+                        <li><a href="/10_gaishu.html" target="_blank" title="嗳气时有腐败鸡蛋的气味">嗳气时有腐败...</a></li>
+                        <li><a href="/45_gaishu.html" target="_blank" title="柏油便">柏油便</a></li>
+                        <li><a href="/110_gaishu.html" target="_blank" title="暴饮暴食">暴饮暴食</a></li>
+                        <li><a href="/112_gaishu.html" target="_blank" title="爆发性水泻">爆发性水泻</a></li>
+                        <li><a href="/126_gaishu.html" target="_blank" title="贲门弛缓">贲门弛缓</a></li>
+                        <li><a href="/232_gaishu.html" target="_blank" title="便秘">便秘</a></li>
+                        <li><a href="/247_gaishu.html" target="_blank" title="便血">便血</a></li>
+                        <li><a href="/268_gaishu.html" target="_blank" title="病毒性腹泻">病毒性腹泻</a></li>
+                        <li><a href="/274_gaishu.html" target="_blank" title="病理性黄疸">病理性黄疸</a></li>
+                        <li><a href="/6891_gaishu.html" target="_blank" title="贲门息肉">贲门息肉</a></li>
+                        <li><a href="/52_gaishu.html" target="_blank" title="餐后发作性腹痛">餐后发作性腹...</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/miniaoneike.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/miniaoneike.html" target="_blank">泌尿内科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/33_gaishu.html" target="_blank" title="白色黏液状尿">白色黏液状尿</a></li>
+                        <li><a href="/34_gaishu.html" target="_blank" title="白色尿液">白色尿液</a></li>
+                        <li><a href="/39_gaishu.html" target="_blank" title="白细胞尿">白细胞尿</a></li>
+                        <li><a href="/437_gaishu.html" target="_blank" title="持续性尿蛋白">持续性尿蛋白</a></li>
+                        <li><a href="/409_gaishu.html" target="_blank" title="晨起肥皮肿">晨起肥皮肿</a></li>
+                        <li><a href="/556_gaishu.html" target="_blank" title="大小便潴留">大小便潴留</a></li>
+                        <li><a href="/627_gaishu.html" target="_blank" title="等渗尿">等渗尿</a></li>
+                        <li><a href="/632_gaishu.html" target="_blank" title="低枸橼酸尿">低枸橼酸尿</a></li>
+                        <li><a href="/630_gaishu.html" target="_blank" title="低分子蛋白尿">低分子蛋白尿</a></li>
+                        <li><a href="/894_gaishu.html" target="_blank" title="发热伴尿频、尿急、尿痛、腰疼">发热伴尿频、...</a></li>
+                        <li><a href="/1074_gaishu.html" target="_blank" title="复杂性尿路感染">复杂性尿路感...</a></li>
+                        <li><a href="/1274_gaishu.html" target="_blank" title="高渗尿">高渗尿</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/xinneike.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/xinneike.html" target="_blank">心内科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/314_gaishu.html" target="_blank" title="不完全性房内阻滞">不完全性房内...</a></li>
+                        <li><a href="/315_gaishu.html" target="_blank" title="不稳定性心绞痛">不稳定性心绞...</a></li>
+                        <li><a href="/294_gaishu.html" target="_blank" title="不典型胸痛">不典型胸痛</a></li>
+                        <li><a href="/44_gaishu.html" target="_blank" title="百特异症状">百特异症状</a></li>
+                        <li><a href="/125_gaishu.html" target="_blank" title="奔马律心音">奔马律心音</a></li>
+                        <li><a href="/92_gaishu.html" target="_blank" title="伴高血压">伴高血压</a></li>
+                        <li><a href="/269_gaishu.html" target="_blank" title="病理性Q波">病理性Q波</a></li>
+                        <li><a href="/479_gaishu.html" target="_blank" title="触诊无肺动脉关闭感">触诊无肺动脉...</a></li>
+                        <li><a href="/486_gaishu.html" target="_blank" title="传导阻滞">传导阻滞</a></li>
+                        <li><a href="/722_gaishu.html" target="_blank" title="窦性停搏">窦性停搏</a></li>
+                        <li><a href="/720_gaishu.html" target="_blank" title="窦房传导阻滞">窦房传导阻滞</a></li>
+                        <li><a href="/709_gaishu.html" target="_blank" title="动脉造影异常">动脉造影异常</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/xueyeke.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/xueyeke.html" target="_blank">血液科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/41_gaishu.html" target="_blank" title="白血病细胞浸润">白血病细胞浸...</a></li>
+                        <li><a href="/40_gaishu.html" target="_blank" title="白细胞增多">白细胞增多</a></li>
+                        <li><a href="/38_gaishu.html" target="_blank" title="白细胞减少">白细胞减少</a></li>
+                        <li><a href="/473_gaishu.html" target="_blank" title="出血倾向">出血倾向</a></li>
+                        <li><a href="/470_gaishu.html" target="_blank" title="出现毒性颗粒">出现毒性颗粒</a></li>
+                        <li><a href="/646_gaishu.html" target="_blank" title="低血磷">低血磷</a></li>
+                        <li><a href="/6550_gaishu.html" target="_blank" title="大腿毛细血管明显">大腿毛细血管...</a></li>
+                        <li><a href="/622_gaishu.html" target="_blank" title="氮质血症">氮质血症</a></li>
+                        <li><a href="/794_gaishu.html" target="_blank" title="恶性贫血">恶性贫血</a></li>
+                        <li><a href="/889_gaishu.html" target="_blank" title="发热伴出血">发热伴出血</a></li>
+                        <li><a href="/1398_gaishu.html" target="_blank" title="骨髓象改变">骨髓象改变</a></li>
+                        <li><a href="/1268_gaishu.html" target="_blank" title="高钠血症">高钠血症</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/neifenmike.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/neifenmike.html" target="_blank">内分泌科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/53_gaishu.html" target="_blank" title="餐后血糖高">餐后血糖高</a></li>
+                        <li><a href="/6896_gaishu.html" target="_blank" title="促甲状腺激素偏低">促甲状腺激素...</a></li>
+                        <li><a href="/6894_gaishu.html" target="_blank" title="促甲状腺激素偏高">促甲状腺激素...</a></li>
+                        <li><a href="/513_gaishu.html" target="_blank" title="促甲状腺激素释放激素缺乏">促甲状腺激素...</a></li>
+                        <li><a href="/511_gaishu.html" target="_blank" title="雌激素不足">雌激素不足</a></li>
+                        <li><a href="/495_gaishu.html" target="_blank" title="垂体性闭经">垂体性闭经</a></li>
+                        <li><a href="/494_gaishu.html" target="_blank" title="垂体危象">垂体危象</a></li>
+                        <li><a href="/492_gaishu.html" target="_blank" title="垂体功能紊乱">垂体功能紊乱</a></li>
+                        <li><a href="/491_gaishu.html" target="_blank" title="垂体功能减退">垂体功能减退</a></li>
+                        <li><a href="/55_gaishu.html" target="_blank" title="餐后综合征">餐后综合征</a></li>
+                        <li><a href="/54_gaishu.html" target="_blank" title="餐后血糖过低">餐后血糖过低</a></li>
+                        <li><a href="/69_gaishu.html" target="_blank" title="产后垂体坏死">产后垂体坏死</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/shenjingneike.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/shenjingneike.html" target="_blank">神经内科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/89_gaishu.html" target="_blank" title="半侧面部发育不良">半侧面部发育...</a></li>
+                        <li><a href="/90_gaishu.html" target="_blank" title="半年或1岁以后逐步出现智能减退">半年或1岁以后...</a></li>
+                        <li><a href="/129_gaishu.html" target="_blank" title="逼尿肌反射亢进">逼尿肌反射亢...</a></li>
+                        <li><a href="/130_gaishu.html" target="_blank" title="逼尿肌无反射">逼尿肌无反射</a></li>
+                        <li><a href="/134_gaishu.html" target="_blank" title="鼻唇沟变浅">鼻唇沟变浅</a></li>
+                        <li><a href="/214_gaishu.html" target="_blank" title="闭目难立征">闭目难立征</a></li>
+                        <li><a href="/215_gaishu.html" target="_blank" title="闭眼站立不能">闭眼站立不能</a></li>
+                        <li><a href="/237_gaishu.html" target="_blank" title="扳机指的弹响">扳机指的弹响</a></li>
+                        <li><a href="/255_gaishu.html" target="_blank" title="表情淡漠">表情淡漠</a></li>
+                        <li><a href="/270_gaishu.html" target="_blank" title="病理性REM睡眠">病理性REM睡眠...</a></li>
+                        <li><a href="/276_gaishu.html" target="_blank" title="病理性神经损伤">病理性神经损...</a></li>
+                        <li><a href="/292_gaishu.html" target="_blank" title="搏动性头痛">搏动性头痛</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/shenneike.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/shenneike.html" target="_blank">肾内科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/12_gaishu.html" target="_blank" title="氨基酸尿症">氨基酸尿症</a></li>
+                        <li><a href="/17_gaishu.html" target="_blank" title="β-氨基酸尿">β-氨基酸尿</a></li>
+                        <li><a href="/210_gaishu.html" target="_blank" title="吡咯烷及呱啶尿">吡咯烷及呱啶...</a></li>
+                        <li><a href="/620_gaishu.html" target="_blank" title="蛋白尿">蛋白尿</a></li>
+                        <li><a href="/760_gaishu.html" target="_blank" title="多尿">多尿</a></li>
+                        <li><a href="/6542_gaishu.html" target="_blank" title="浮肿">浮肿</a></li>
+                        <li><a href="/1187_gaishu.html" target="_blank" title="肝肾综合征">肝肾综合征</a></li>
+                        <li><a href="/1353_gaishu.html" target="_blank" title="孤立肾">孤立肾</a></li>
+                        <li><a href="/1620_gaishu.html" target="_blank" title="踝部凹陷性水肿">踝部凹陷性水...</a></li>
+                        <li><a href="/1621_gaishu.html" target="_blank" title="踝部及足背水肿">踝部及足背水...</a></li>
+                        <li><a href="/2183_gaishu.html" target="_blank" title="局限性肾坏死">局限性肾坏死</a></li>
+                        <li><a href="/1747_gaishu.html" target="_blank" title="急性肾衰竭">急性肾衰竭</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20 bor-dash mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/yichuanbingke.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/yichuanbingke.html" target="_blank">遗传病科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/127_gaishu.html" target="_blank" title="苯丙氨酸代谢障碍">苯丙氨酸代谢...</a></li>
+                        <li><a href="/517_gaishu.html" target="_blank" title="脆性X综合征">脆性X综合征</a></li>
+                        <li><a href="/400_gaishu.html" target="_blank" title="常染色体畸变">常染色体畸变</a></li>
+                        <li><a href="/402_gaishu.html" target="_blank" title="超雌">超雌</a></li>
+                        <li><a href="/404_gaishu.html" target="_blank" title="超雄">超雄</a></li>
+                        <li><a href="/886_gaishu.html" target="_blank" title="二羧基氨基酸尿">二羧基氨基酸...</a></li>
+                        <li><a href="/885_gaishu.html" target="_blank" title="二碱基氨基酸尿症">二碱基氨基酸...</a></li>
+                        <li><a href="/3084_gaishu.html" target="_blank" title="腓骨肌对称萎缩逐渐向上发展">腓骨肌对称萎...</a></li>
+                        <li><a href="/1457_gaishu.html" target="_blank" title="胱氨酸储积症">胱氨酸储积症</a></li>
+                        <li><a href="/1279_gaishu.html" target="_blank" title="高同型半胱氨酸血症">高同型半胱氨...</a></li>
+                        <li><a href="/1483_gaishu.html" target="_blank" title="海藻糖酶缺乏">海藻糖酶缺乏</a></li>
+                        <li><a href="/1932_gaishu.html" target="_blank" title="角形甲弧影">角形甲弧影</a></li>
+            </ul>
+</div>
+       <div class="ks-ill-box pb20  mt20">
+    <div class="ks-ill-tit clearfix">
+                <a href="/p/fengshimianyike.html" class="fr look-more" target="_blank">更多&gt;</a>
+
+        <strong class="fb f14"><a class="gre" href="/p/fengshimianyike.html" target="_blank">风湿免疫科</a>常见症状</strong>
+    </div>
+    <ul class="ks-ill-list clearfix mt5">
+                        <li><a href="/408_gaishu.html" target="_blank" title="晨僵">晨僵</a></li>
+                        <li><a href="/757_gaishu.html" target="_blank" title="多克隆型冷球蛋白血症">多克隆型冷球...</a></li>
+                        <li><a href="/1058_gaishu.html" target="_blank" title="风湿性多发性肌痛症">风湿性多发性...</a></li>
+                        <li><a href="/1059_gaishu.html" target="_blank" title="风湿性血管炎">风湿性血管炎</a></li>
+                        <li><a href="/890_gaishu.html" target="_blank" title="发热伴关节肿痛">发热伴关节肿...</a></li>
+                        <li><a href="/962_gaishu.html" target="_blank" title="非对称性关节痛">非对称性关节...</a></li>
+                        <li><a href="/1435_gaishu.html" target="_blank" title="关节酸痛">关节酸痛</a></li>
+                        <li><a href="/1436_gaishu.html" target="_blank" title="关节疼痛">关节疼痛</a></li>
+                        <li><a href="/1443_gaishu.html" target="_blank" title="关节肿大">关节肿大</a></li>
+                        <li><a href="/1444_gaishu.html" target="_blank" title="关节肿痛">关节肿痛</a></li>
+                        <li><a href="/1442_gaishu.html" target="_blank" title="关节游走性疼痛，肿胀">关节游走性疼...</a></li>
+                        <li><a href="/1433_gaishu.html" target="_blank" title="关节强直">关节强直</a></li>
+            </ul>
+</div>
+    
+</div>
+</div>
+</div>
+
+<div class="wrap mt10">
+    <script src="//js.static.xywy.com/channel-public/js/public_bottom.js" type="text/javascript"></script>
+<script src="https://pub1.wkimg.com/rightpop/new_popwin.js"></script></div>
+<script type="text/javascript" src="//static.wkimg.com/common/lib/jquery-xywy-plus.js"></script>
+<script type="text/javascript" src="//js.static.xywy.com/zhengzhuang/js/zz_index.js"></script>
+<script language="javascript" src="//js.static.xywy.com/jbindex/js/jib_pub_search.js"></script>
+<div style="display: none;">
+
+</div>
+</body>
+</html>
