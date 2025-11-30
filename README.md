@@ -148,8 +148,8 @@ NEO4J_PASSWORD=your_password
 
 ## 技术栈
 
-- Python 3.9+
-- LangChain 0.3.x
+- Python 3.12
+- LangChain 1.0
 - Neo4j
 - DeepSeek API
 
