@@ -1,0 +1,132 @@
+// 动画效果
+
+// 淡入
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// 从下滑入
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 从右滑入
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// 脉冲动画 (用于 Agent 思考)
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// 波纹扩散 (用于工具调用)
+@keyframes ripple {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+// 打字光标闪烁
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+// 打字点跳动动画
+@keyframes typingDot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+// 加载旋转
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// 实体高亮发光
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 10px currentColor;
+  }
+}
+
+// 工具卡片展开
+@keyframes expandCard {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 500px;
+    opacity: 1;
+  }
+}
+
+// 工具类
+.fade-in {
+  animation: fadeIn var(--transition-base);
+}
+
+.slide-in-up {
+  animation: slideInUp var(--transition-base);
+}
+
+.slide-in-right {
+  animation: slideInRight var(--transition-base);
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}

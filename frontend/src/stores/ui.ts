@@ -1,0 +1,27 @@
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+
+export const useUIStore = defineStore('ui', () => {
+  // 侧边栏状态
+  const sidebarCollapsed = ref(false);
+
+  /**
+   * 切换侧边栏
+   */
+  const toggleSidebar = () => {
+    sidebarCollapsed.value = !sidebarCollapsed.value;
+  };
+
+  /**
+   * 设置侧边栏状态
+   */
+  const setSidebarCollapsed = (collapsed: boolean) => {
+    sidebarCollapsed.value = collapsed;
+  };
+
+  return {
+    sidebarCollapsed,
+    toggleSidebar,
+    setSidebarCollapsed
+  };
+});

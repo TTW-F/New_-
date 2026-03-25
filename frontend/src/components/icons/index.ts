@@ -1,0 +1,10 @@
+// Icon components
+export { default as IconBase } from './IconBase.vue'
+export { default as IconTool } from './IconTool.vue'
+export { default as IconCheck } from './IconCheck.vue'
+export { default as IconError } from './IconError.vue'
+export { default as IconWarning } from './IconWarning.vue'
+export { default as IconLoading } from './IconLoading.vue'
+export { default as IconClock } from './IconClock.vue'
+export { default as IconRobot } from './IconRobot.vue'
+export { default as IconSend } from './IconSend.vue'

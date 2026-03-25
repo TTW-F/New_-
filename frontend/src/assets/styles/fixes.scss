@@ -1,0 +1,104 @@
+// 修复文字透明度问题
+
+// 确保所有文字都有足够的对比度
+* {
+  // 移除可能导致文字透明的全局样式
+  &:not(.fade-enter-active):not(.fade-leave-active):not(.fade-enter-from):not(.fade-leave-to) {
+    // 确保文字不透明
+    &:not(.loading):not([class*="-enter"]):not([class*="-leave"]) {
+      color: inherit;
+    }
+  }
+}
+
+// 确保主要文字颜色
+body,
+.app {
+  color: var(--color-text-primary);
+}
+
+// 修复可能的透明文字
+.message-content,
+.tool-name,
+.tool-status,
+.section-title,
+.drug-name,
+.disease-name,
+.treatment-title,
+label,
+input,
+textarea,
+button,
+.btn,
+.form-label,
+.form-input,
+.sidebar-title,
+.session-item__title,
+.empty-text,
+.error-message {
+  color: inherit !important;
+  opacity: 1 !important;
+  
+  &::placeholder {
+    color: var(--color-text-tertiary);
+    opacity: 1;
+  }
+}
+
+// 确保次要文字也可见
+.text-secondary,
+.description,
+.hint,
+.meta {
+  color: var(--color-text-secondary) !important;
+  opacity: 1 !important;
+}
+
+// 确保禁用状态的文字可见
+.disabled,
+:disabled {
+  color: var(--color-text-disabled) !important;
+  opacity: 0.6 !important;
+}
+
+// 修复特定组件的透明度
+.empty-icon {
+  opacity: 0.5; // 这个是故意的，保持
+}
+
+.session-item__delete {
+  opacity: 0; // 这个是故意的，hover 时显示
+  
+  &:hover,
+  &:focus {
+    opacity: 1 !important;
+  }
+}
+
+// 确保动画过程中的透明度正确
+.fade-enter-active,
+.fade-leave-active,
+.modal-enter-active,
+.modal-leave-active,
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity var(--transition-base);
+}
+
+.fade-enter-from,
+.fade-leave-to,
+.modal-enter-from,
+.modal-leave-to,
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from,
+.modal-enter-to,
+.modal-leave-from,
+.toast-enter-to,
+.toast-leave-from {
+  opacity: 1;
+}
