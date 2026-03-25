@@ -11,11 +11,20 @@ faiss-cpu>=1.7.4  # 或使用 faiss-gpu 并根据 CUDA 版本
 # FastAPI
 fastapi>=0.100.0
 pydantic>=2.0.0
+pydantic-settings>=2.0.0
+uvicorn>=0.23.0
+python-multipart>=0.0.6
+
+# 认证和安全
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+slowapi>=0.1.8
 
 # 数据库
 pymysql>=1.1.0
 sqlalchemy>=2.0.0
-neo4j-driver>=5.0.0
+neo4j>=5.0.0
+redis>=4.5.0
 
 # 爬虫和数据解析
 lxml>=4.9.0  # HTML/XML 解析
