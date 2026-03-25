@@ -1,0 +1,42 @@
+# 模块1-认证模块用例图
+
+flowchart TB
+    actor "用户" as User
+    actor "管理员" as Admin
+
+    subgraph 认证模块
+        card "用户登录" as A1
+        card "用户注册" as A2
+        card "用户登出" as A3
+        card "Token管理" as A4
+        card "会话验证" as A5
+    }
+
+    subgraph 用户管理
+        card "查看个人信息" as M1
+        card "修改密码" as M2
+        card "退出登录" as M3
+    end
+
+    subgraph 管理员功能
+        card "用户列表" as B1
+        card "禁用用户" as B2
+        card "查看日志" as B3
+    end
+
+    User --> A1
+    User --> A2
+    User --> A3
+    User --> M1
+    User --> M2
+    User --> M3
+
+    Admin --> B1
+    Admin --> B2
+    Admin --> B3
+
+    A1 --> A4
+    A2 --> A4
+    A3 --> A4
+    A1 --> A5
+    A5 --> M1

@@ -1,0 +1,29 @@
+# UC1-用户登录用例图
+
+flowchart LR
+    actor "用户" as User
+    rectangle "登录模块" as Login {
+        card "输入账号" as C1
+        card "输入密码" as C2
+        card "点击登录" as C3
+        card "验证凭证" as C4
+        card "生成Token" as C5
+        card "存储Token" as C6
+        card "跳转首页" as C7
+    }
+    rectangle "错误处理" as Error {
+        card "账号错误" as E1
+        card "密码错误" as E2
+        card "显示错误" as E3
+    }
+
+    User --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 -->|成功| C5
+    C4 -->|失败| E3
+    E3 --> E1
+    E3 --> E2
+    C5 --> C6
+    C6 --> C7

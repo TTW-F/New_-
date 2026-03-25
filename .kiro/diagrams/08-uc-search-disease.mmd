@@ -1,0 +1,17 @@
+# UC8-疾病查询用例图
+
+flowchart LR
+    actor "用户" as User
+    rectangle "查询模块" as Search {
+        card "输入疾病名" as C1
+        card "模糊匹配" as C2
+        card "图谱查询" as C3
+        card "返回详情" as C4
+        card "渲染卡片" as C5
+    }
+
+    User --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5

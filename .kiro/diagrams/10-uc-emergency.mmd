@@ -1,0 +1,18 @@
+# UC10-紧急识别用例图
+
+flowchart LR
+    actor "用户" as User
+    rectangle "紧急模块" as Emergency {
+        card "输入内容" as C1
+        card "关键词检测" as C2
+        card "紧急判断" as C3
+        card "显示警告" as C4
+        card "添加声明" as C5
+    }
+
+    User --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 -->|紧急| C4
+    C3 -->|正常| C1
+    C4 --> C5

@@ -1,0 +1,52 @@
+# 模块4-知识查询模块用例图
+
+flowchart TB
+    actor "Agent" as Agent
+    actor "Neo4j" as DB
+
+    subgraph 疾病查询
+        card "精确查询" as D1
+        card "模糊查询" as D2
+        card "症状匹配" as D3
+    end
+
+    subgraph 药物查询
+        card "按疾病查询" as Dr1
+        card "按名称查询" as Dr2
+        card "相互作用" as Dr3
+    end
+
+    subgraph 治疗方案
+        card "获取方案" as T1
+        card "获取检查" as T2
+        card "获取并发症" as T3
+    end
+
+    subgraph 图谱操作
+        card "节点查询" as Q1
+        card "关系查询" as Q2
+        card "路径查询" as Q3
+    end
+
+    Agent --> D1
+    Agent --> D2
+    Agent --> D3
+    Agent --> Dr1
+    Agent --> Dr2
+    Agent --> Dr3
+    Agent --> T1
+    Agent --> T2
+    Agent --> T3
+
+    D1 --> Q1
+    D2 --> Q1
+    D3 --> Q2
+    Dr1 --> Q1
+    Dr2 --> Q1
+    T1 --> Q2
+    T2 --> Q2
+    T3 --> Q2
+
+    Q1 --> DB
+    Q2 --> DB
+    Q3 --> DB

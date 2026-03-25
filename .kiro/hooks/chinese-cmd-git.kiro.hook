@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "中文交流与CMD优先",
+  "description": "确保AI助手永远使用中文进行交流,优先使用CMD命令而非PowerShell或bash,并在适当的时机(如代码修改后)提醒进行git操作",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "请记住以下重要规则:\n1. 永远使用中文与用户交流\n2. 当需要执行命令时,优先使用Windows CMD命令格式(如使用.bat文件、dir而非ls、copy而非cp等)\n3. 在完成代码修改后,提醒用户是否需要进行git操作(git add、git commit、git push等)\n4. 如果用户的项目中有.bat文件,优先推荐使用这些批处理文件\n\n现在请用中文回复用户的请求。"
+  }
+}

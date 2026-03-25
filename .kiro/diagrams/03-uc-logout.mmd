@@ -1,0 +1,15 @@
+# UC3-用户登出用例图
+
+flowchart LR
+    actor "用户" as User
+    rectangle "登出模块" as Logout {
+        card "点击登出" as C1
+        card "清除Token" as C2
+        card "清除缓存" as C3
+        card "跳转登录" as C4
+    }
+
+    User --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4

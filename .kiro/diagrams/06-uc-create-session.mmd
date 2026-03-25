@@ -1,0 +1,17 @@
+# UC6-创建会话用例图
+
+flowchart LR
+    actor "用户" as User
+    rectangle "会话模块" as Session {
+        card "点击新建" as C1
+        card "生成ID" as C2
+        card "初始化记录" as C3
+        card "创建Agent" as C4
+        card "显示界面" as C5
+    }
+
+    User --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5

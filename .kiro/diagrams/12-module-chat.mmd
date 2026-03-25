@@ -1,0 +1,40 @@
+# 模块2-聊天会话模块用例图
+
+flowchart TB
+    actor "用户" as User
+    actor "Agent" as Agent
+
+    subgraph 会话管理
+        card "创建会话" as C1
+        card "切换会话" as C2
+        card "删除会话" as C3
+        card "会话列表" as C4
+    end
+
+    subgraph 消息处理
+        card "发送消息" as M1
+        card "接收消息" as M2
+        card "消息历史" as M3
+        card "消息渲染" as M4
+    end
+
+    subgraph 流式通信
+        card "建立SSE" as S1
+        card "流式接收" as S2
+        card "事件解析" as S3
+    end
+
+    User --> C1
+    User --> C2
+    User --> C3
+    User --> C4
+    User --> M1
+
+    M1 --> S1
+    S1 --> S2
+    S2 --> S3
+    S3 --> M2
+    M2 --> M3
+    M3 --> M4
+
+    Agent --> M2

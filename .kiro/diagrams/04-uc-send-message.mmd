@@ -1,0 +1,20 @@
+# UC4-发送消息用例图
+
+flowchart LR
+    actor "用户" as User
+    rectangle "发送模块" as Send {
+        card "输入内容" as C1
+        card "非空验证" as C2
+        card "发送请求" as C3
+        card "建立SSE" as C4
+        card "流式接收" as C5
+        card "渲染消息" as C6
+    }
+
+    User --> C1
+    C1 --> C2
+    C2 -->|为空| C1
+    C2 -->|有效| C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> C6

@@ -1,0 +1,74 @@
+# 系统总体用例图
+
+flowchart TB
+    actor "用户" as User
+    actor "管理员" as Admin
+    actor "DeepSeek API" as LLM
+    actor "Neo4j" as DB
+
+    subgraph 认证服务
+        card "登录" as A1
+        card "注册" as A2
+        card "登出" as A3
+    end
+
+    subgraph 会话服务
+        card "创建会话" as S1
+        card "切换会话" as S2
+        card "删除会话" as S3
+        card "查看历史" as S4
+    end
+
+    subgraph 智能问答
+        card "发送消息" as Q1
+        card "症状诊断" as Q2
+        card "疾病查询" as Q3
+        card "药物查询" as Q4
+        card "治疗方案" as Q5
+    end
+
+    subgraph Agent服务
+        card "工具选择" as T1
+        card "上下文管理" as T2
+        card "流式响应" as T3
+    end
+
+    subgraph 知识图谱
+        card "疾病查询" as K1
+        card "症状匹配" as K2
+        card "药物关联" as K3
+    end
+
+    User --> A1
+    User --> A2
+    User --> S1
+    User --> S2
+    User --> S4
+    User --> Q1
+
+    Q1 --> Q2
+    Q1 --> Q3
+    Q1 --> Q4
+    Q1 --> Q5
+
+    Q2 --> T1
+    Q3 --> T1
+    Q4 --> T1
+    Q5 --> T1
+
+    T1 --> T2
+    T2 --> T3
+    T3 --> LLM
+
+    Q2 --> K1
+    Q2 --> K2
+    Q3 --> K1
+    Q4 --> K3
+    Q5 --> K1
+
+    K1 --> DB
+    K2 --> DB
+    K3 --> DB
+
+    Admin --> A1
+    Admin --> S3
