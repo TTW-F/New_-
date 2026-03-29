@@ -1,4 +1,4 @@
-# 智医问答 - 医疗诊断智能问答系统
+﻿# 智医问答 - 医疗诊断智能问答系统
 
 <div align="center">
 
@@ -14,6 +14,13 @@
 </div>
 
 ---
+## 文档导航
+
+- 文档总索引：`docs/INDEX.md`
+- 代码地图：`docs/CODEMAPS/INDEX.md`
+- 接口文档：`docs/API/README.md`
+- 开发文档：`docs/DEVELOPMENT/README.md`
+- 架构文档：`docs/architecture/INDEX.md`
 
 ## 📋 项目简介
 
@@ -898,3 +905,4 @@ MIT License
 Made with ❤️ by Medical QA Team
 
 </div>
+
