@@ -4,7 +4,6 @@
 提供医疗知识库的搜索和浏览功能
 """
 
-import logging
 from typing import Optional, List
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
@@ -12,8 +11,8 @@ from sqlalchemy.orm import Session
 from api.core.database import get_db
 from api.security.jwt import get_current_user_optional
 from api.models.user import User
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/knowledge", tags=["知识库"])
 
@@ -278,4 +277,174 @@ async def get_knowledge_stats(
         return {
             "status": "error",
             "message": "获取统计失败"
+        }
+
+
+@router.get("/graph/{entity_name}")
+async def get_entity_graph(
+    entity_name: str,
+    entity_type: Optional[str] = Query(None, description="实体类型"),
+    depth: int = Query(1, ge=1, le=2, description="关系深度(1-2层)"),
+    current_user: User = Depends(get_current_user_optional),
+    db: Session = Depends(get_db)
+):
+    """
+    获取实体的关系图谱数据
+    
+    返回指定实体及其相关实体的图谱数据，用于可视化展示。
+    
+    **参数：**
+    - **entity_name**: 实体名称
+    - **entity_type**: 实体类型（可选）
+    - **depth**: 关系深度，1表示直接关系，2表示二度关系
+    
+    **返回：**
+    - nodes: 节点列表
+    - links: 关系列表
+    """
+    try:
+        from neo4j_service import get_neo4j_service
+        
+        neo4j = get_neo4j_service()
+        
+        # 构建查询，获取实体及其关系
+        if depth == 1:
+            query = """
+            MATCH (center {name: $name})
+            OPTIONAL MATCH (center)-[r]-(related)
+            RETURN center, collect(DISTINCT {node: related, rel: r, type: type(r)}) as relationships
+            """
+        else:  # depth == 2
+            query = """
+            MATCH (center {name: $name})
+            OPTIONAL MATCH path = (center)-[r1]-(related1)-[r2]-(related2)
+            WHERE related2 <> center
+            WITH center, 
+                 collect(DISTINCT {node: related1, rel: r1, type: type(r1)}) as direct_rels,
+                 collect(DISTINCT {node: related2, rel: r2, type: type(r2), via: related1}) as indirect_rels
+            RETURN center, direct_rels, indirect_rels
+            """
+        
+        with neo4j.driver.session() as session:
+            result = session.run(query, name=entity_name)
+            record = result.single()
+            
+            if not record:
+                return {
+                    "status": "error",
+                    "message": "未找到该实体",
+                    "nodes": [],
+                    "links": []
+                }
+            
+            # 构建节点和边
+            nodes = []
+            links = []
+            node_ids = set()
+            
+            # 中心节点
+            center = dict(record["center"])
+            center_id = center.get("name")
+            center_labels = list(record["center"].labels)
+            
+            nodes.append({
+                "id": center_id,
+                "text": center_id,
+                "type": center_labels[0] if center_labels else "Unknown",
+                "data": center,
+                "isCenter": True
+            })
+            node_ids.add(center_id)
+            
+            # 处理直接关系
+            if depth == 1:
+                relationships = record["relationships"]
+                for rel_data in relationships:
+                    if rel_data["node"]:
+                        node = dict(rel_data["node"])
+                        node_id = node.get("name")
+                        node_labels = list(rel_data["node"].labels)
+                        
+                        if node_id and node_id not in node_ids:
+                            nodes.append({
+                                "id": node_id,
+                                "text": node_id,
+                                "type": node_labels[0] if node_labels else "Unknown",
+                                "data": node
+                            })
+                            node_ids.add(node_id)
+                        
+                        if node_id:
+                            links.append({
+                                "from": center_id,
+                                "to": node_id,
+                                "text": rel_data["type"]
+                            })
+            else:  # depth == 2
+                # 处理一度关系
+                direct_rels = record.get("direct_rels", [])
+                for rel_data in direct_rels:
+                    if rel_data["node"]:
+                        node = dict(rel_data["node"])
+                        node_id = node.get("name")
+                        node_labels = list(rel_data["node"].labels)
+                        
+                        if node_id and node_id not in node_ids:
+                            nodes.append({
+                                "id": node_id,
+                                "text": node_id,
+                                "type": node_labels[0] if node_labels else "Unknown",
+                                "data": node
+                            })
+                            node_ids.add(node_id)
+                        
+                        if node_id:
+                            links.append({
+                                "from": center_id,
+                                "to": node_id,
+                                "text": rel_data["type"]
+                            })
+                
+                # 处理二度关系（限制数量避免过多）
+                indirect_rels = record.get("indirect_rels", [])[:20]
+                for rel_data in indirect_rels:
+                    if rel_data["node"] and rel_data["via"]:
+                        node = dict(rel_data["node"])
+                        node_id = node.get("name")
+                        node_labels = list(rel_data["node"].labels)
+                        via_node = dict(rel_data["via"])
+                        via_id = via_node.get("name")
+                        
+                        if node_id and node_id not in node_ids:
+                            nodes.append({
+                                "id": node_id,
+                                "text": node_id,
+                                "type": node_labels[0] if node_labels else "Unknown",
+                                "data": node
+                            })
+                            node_ids.add(node_id)
+                        
+                        if node_id and via_id:
+                            links.append({
+                                "from": via_id,
+                                "to": node_id,
+                                "text": rel_data["type"]
+                            })
+            
+            logger.info(f"获取图谱数据: entity={entity_name}, nodes={len(nodes)}, links={len(links)}")
+            
+            return {
+                "status": "success",
+                "entity_name": entity_name,
+                "nodes": nodes,
+                "links": links
+            }
+        
+    except Exception as e:
+        logger.error(f"获取图谱数据失败: {e}", exc_info=True)
+        return {
+            "status": "error",
+            "message": "获取图谱数据失败",
+            "nodes": [],
+            "links": []
         }

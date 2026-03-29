@@ -4,14 +4,13 @@
 处理对话历史的存储、查询和管理
 """
 
-import logging
 from typing import Optional, List, Tuple
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
 from api.models.conversation import ConversationHistory, Feedback, FeedbackType
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 
 class ConversationService:
@@ -66,7 +65,12 @@ class ConversationService:
         self.db.commit()
         self.db.refresh(conversation)
         
-        logger.debug(f"保存对话记录: id={conversation.id}, user_id={user_id}")
+        logger.bind(
+            conversation_id=conversation.id,
+            user_id=user_id,
+            session_id=session_id,
+            response_time=response_time
+        ).debug("保存对话记录")
         return conversation
     
     def get_conversation_by_id(
@@ -201,8 +205,7 @@ class ConversationService:
             ConversationHistory.session_id,
             func.count(ConversationHistory.id).label('message_count'),
             func.avg(ConversationHistory.response_time).label('avg_response_time'),
-            func.max(ConversationHistory.created_at).label('updated_at'),
-            func.max(ConversationHistory.question).label('last_question')
+            func.max(ConversationHistory.created_at).label('updated_at')
         ).filter(
             ConversationHistory.user_id == user_id,
             ConversationHistory.is_deleted == False
@@ -211,15 +214,15 @@ class ConversationService:
         ).order_by(
             desc('updated_at')
         )
-        
+
         # 计算总数
         total = session_stats.count()
-        
+
         # 分页
         offset = (page - 1) * page_size
         sessions = session_stats.offset(offset).limit(page_size).all()
-        
-        # 获取每个会话的第一条问题作为标题
+
+        # 获取每个会话的第一条和最后一条问题
         result = []
         for session in sessions:
             first_conv = self.db.query(ConversationHistory).filter(
@@ -227,16 +230,25 @@ class ConversationService:
                 ConversationHistory.session_id == session.session_id,
                 ConversationHistory.is_deleted == False
             ).order_by(ConversationHistory.created_at).first()
-            
+
+            last_conv = self.db.query(ConversationHistory).filter(
+                ConversationHistory.user_id == user_id,
+                ConversationHistory.session_id == session.session_id,
+                ConversationHistory.is_deleted == False
+            ).order_by(desc(ConversationHistory.created_at)).first()
+
             title = first_conv.question[:30] + "..." if first_conv and len(first_conv.question) > 30 else (first_conv.question if first_conv else "医疗咨询")
-            
+            last_question = last_conv.question if last_conv else None
+
             result.append({
                 "session_id": session.session_id,
                 "title": title,
+                "first_question": first_conv.question if first_conv else "医疗咨询",
+                "created_at": first_conv.created_at.isoformat() if first_conv else session.updated_at.isoformat(),
                 "message_count": session.message_count,
                 "avg_response_time": int(session.avg_response_time) if session.avg_response_time else 0,
                 "updated_at": session.updated_at.isoformat(),
-                "last_question": session.last_question[:50] + "..." if session.last_question and len(session.last_question) > 50 else session.last_question
+                "last_question": last_question[:50] + "..." if last_question and len(last_question) > 50 else last_question
             })
         
         return result, total
@@ -291,7 +303,10 @@ class ConversationService:
         conversation.is_deleted = True
         self.db.commit()
         
-        logger.info(f"软删除对话记录: id={conversation_id}, user_id={user_id}")
+        logger.bind(
+            conversation_id=conversation_id,
+            user_id=user_id
+        ).info("软删除对话记录")
         return True
     
     def delete_session(
@@ -323,7 +338,11 @@ class ConversationService:
         
         self.db.commit()
         
-        logger.info(f"软删除会话: session_id={session_id}, user_id={user_id}, count={len(conversations)}")
+        logger.bind(
+            session_id=session_id,
+            user_id=user_id,
+            count=len(conversations)
+        ).info("软删除会话")
         return True
     
     def hard_delete(
@@ -400,7 +419,13 @@ class ConversationService:
         self.db.commit()
         self.db.refresh(feedback)
         
-        logger.info(f"保存反馈: id={feedback.id}, conversation_id={conversation_id}, rating={rating}")
+        logger.bind(
+            feedback_id=feedback.id,
+            conversation_id=conversation_id,
+            user_id=user_id,
+            rating=rating,
+            feedback_type=feedback_type
+        ).success("保存反馈")
         return feedback, None
     
     def get_feedback_by_conversation(

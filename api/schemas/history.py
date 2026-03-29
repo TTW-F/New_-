@@ -35,8 +35,13 @@ class HistoryListResponse(BaseModel):
 class SessionInfo(BaseModel):
     """会话信息"""
     session_id: str
+    title: str
     first_question: str
     created_at: str
+    message_count: int
+    avg_response_time: int
+    updated_at: str
+    last_question: Optional[str]
 
 
 class SessionListResponse(BaseModel):
