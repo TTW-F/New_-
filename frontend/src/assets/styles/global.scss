@@ -1,9 +1,11 @@
 // 全局样式
 
+// @use 必须在最前面
+@use './variables.scss' as *;
+@use './animations.scss' as *;
+@use './fixes.scss' as *;
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
-@import './variables.scss';
-@import './animations.scss';
-@import './fixes.scss';
 
 * {
   margin: 0;

@@ -89,7 +89,23 @@
                   </td>
                   <td>{{ formatDateTime(user.created_at) }}</td>
                   <td>
-                    <button class="btn-action" @click="viewUserDetail(user)">详情</button>
+                    <div class="action-buttons">
+                      <button class="btn-action btn-view" @click="viewUserDetail(user)">详情</button>
+                      <button 
+                        v-if="user.user_type !== 'admin'"
+                        :class="['btn-action', user.is_active ? 'btn-disable' : 'btn-enable']" 
+                        @click="handleToggleStatus(user)"
+                      >
+                        {{ user.is_active ? '禁用' : '启用' }}
+                      </button>
+                      <button 
+                        v-if="user.user_type !== 'admin'"
+                        class="btn-action btn-delete" 
+                        @click="handleDeleteUser(user)"
+                      >
+                        删除
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -230,6 +246,45 @@ const viewUserDetail = async (user: adminApi.UserListItem) => {
   } catch (error: any) {
     console.error('加载用户详情失败:', error);
     showToast(error.response?.data?.message || '加载用户详情失败', 'error');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 切换用户状态
+const handleToggleStatus = async (user: adminApi.UserListItem) => {
+  const action = user.is_active ? '禁用' : '启用';
+  if (!confirm(`确定要${action}用户 "${user.username}" 吗？`)) {
+    return;
+  }
+  
+  try {
+    loading.value = true;
+    await adminApi.toggleUserStatus(user.id);
+    showToast(`用户已${action}`, 'success');
+    await loadUsers();
+  } catch (error: any) {
+    console.error('切换用户状态失败:', error);
+    showToast(error.response?.data?.message || '操作失败', 'error');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 删除用户
+const handleDeleteUser = async (user: adminApi.UserListItem) => {
+  if (!confirm(`确定要删除用户 "${user.username}" 吗？此操作不可恢复！`)) {
+    return;
+  }
+  
+  try {
+    loading.value = true;
+    await adminApi.deleteUser(user.id);
+    showToast('用户已删除', 'success');
+    await loadUsers();
+  } catch (error: any) {
+    console.error('删除用户失败:', error);
+    showToast(error.response?.data?.message || '删除失败', 'error');
   } finally {
     loading.value = false;
   }
@@ -415,6 +470,27 @@ onMounted(async () => {
 .table-container {
   overflow-x: auto;
   margin-bottom: 20px;
+  max-height: 600px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 4px;
+
+    &:hover {
+      background: var(--color-text-tertiary);
+    }
+  }
 }
 
 .data-table {
@@ -513,6 +589,40 @@ onMounted(async () => {
     &:hover {
       background: var(--color-primary-dark);
     }
+
+    &.btn-view {
+      background: var(--color-primary);
+    }
+
+    &.btn-disable {
+      background: #f59e0b;
+
+      &:hover {
+        background: #d97706;
+      }
+    }
+
+    &.btn-enable {
+      background: #10b981;
+
+      &:hover {
+        background: #059669;
+      }
+    }
+
+    &.btn-delete {
+      background: #ef4444;
+
+      &:hover {
+        background: #dc2626;
+      }
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 }
 

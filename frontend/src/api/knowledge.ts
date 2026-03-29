@@ -42,3 +42,17 @@ export async function getKnowledgeStats(): Promise<any> {
   const response = await apiClient.get('/api/v1/knowledge/stats');
   return response.data;
 }
+
+/** 获取实体关系图谱数据 */
+export async function getEntityGraph(
+  entityName: string,
+  entityType?: string,
+  depth: number = 1
+): Promise<any> {
+  const params: any = { depth };
+  if (entityType) {
+    params.entity_type = entityType;
+  }
+  const response = await apiClient.get(`/api/v1/knowledge/graph/${entityName}`, { params });
+  return response.data;
+}

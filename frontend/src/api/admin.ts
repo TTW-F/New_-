@@ -2,7 +2,7 @@
  * 后台管理 API
  */
 
-import { apiClient } from './client';
+import apiClient from './client';
 
 /**
  * 统计数据接口
@@ -156,5 +156,21 @@ export async function getLogs(params: {
   page_size: number;
 }> {
   const response = await apiClient.get('/admin/logs', { params });
+  return response.data;
+}
+
+/**
+ * 切换用户状态（启用/禁用）
+ */
+export async function toggleUserStatus(userId: number): Promise<UserListItem> {
+  const response = await apiClient.put<UserListItem>(`/admin/users/${userId}/toggle-status`);
+  return response.data;
+}
+
+/**
+ * 删除用户
+ */
+export async function deleteUser(userId: number): Promise<{ message: string; user_id: number }> {
+  const response = await apiClient.delete(`/admin/users/${userId}`);
   return response.data;
 }

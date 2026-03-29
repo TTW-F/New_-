@@ -3,9 +3,25 @@
     <Navbar />
     <div class="knowledge-header">
       <h1>医疗知识库</h1>
+      <div class="view-tabs">
+        <button 
+          :class="['tab-btn', { active: currentView === 'search' }]"
+          @click="currentView = 'search'"
+        >
+          搜索浏览
+        </button>
+        <button 
+          :class="['tab-btn', { active: currentView === 'graph' }]"
+          @click="currentView = 'graph'"
+        >
+          图谱视图
+        </button>
+      </div>
     </div>
 
     <div class="knowledge-content">
+      <!-- 搜索视图 -->
+      <div v-show="currentView === 'search'" class="search-view">
       <div class="search-section">
         <div class="search-box">
           <input 
@@ -165,6 +181,43 @@
           </div>
         </div>
       </div>
+      </div>
+
+      <!-- 图谱视图 -->
+      <div v-show="currentView === 'graph'" class="graph-view">
+        <div class="graph-search">
+          <input 
+            v-model="graphSearchKeyword" 
+            type="text" 
+            placeholder="输入实体名称查看关系图谱..."
+            @keyup.enter="handleGraphSearch"
+          />
+          <button @click="handleGraphSearch" class="btn-search">查看图谱</button>
+        </div>
+
+        <div v-if="!graphEntityName" class="graph-intro">
+          <div class="intro-icon">🕸️</div>
+          <h3>知识图谱可视化</h3>
+          <p>输入疾病、症状或药品名称,查看它们之间的关联关系</p>
+          <div class="example-searches">
+            <span 
+              v-for="example in graphExamples" 
+              :key="example"
+              class="example-tag"
+              @click="searchGraph(example)"
+            >
+              {{ example }}
+            </span>
+          </div>
+        </div>
+
+        <KnowledgeGraph
+          v-else
+          :entity-name="graphEntityName"
+          :entity-type="graphEntityType"
+          @node-click="handleGraphNodeClick"
+        />
+      </div>
     </div>
 
     <!-- 详情弹窗 -->
@@ -195,11 +248,16 @@ import { useToast } from '@/composables/useToast';
 import Loading from '@/components/common/Loading.vue';
 import Modal from '@/components/common/Modal.vue';
 import Navbar from '@/components/common/Navbar.vue';
+import KnowledgeGraph from '@/components/knowledge/KnowledgeGraphEcharts.vue';
 import { searchKnowledge, getRecommendedKnowledge } from '@/api/knowledge';
 
 const router = useRouter();
 const { showToast } = useToast();
 
+// 视图切换
+const currentView = ref<'search' | 'graph'>('search');
+
+// 搜索视图相关
 const searchKeyword = ref('');
 const selectedType = ref('all');
 const loading = ref(false);
@@ -207,6 +265,12 @@ const hasSearched = ref(false);
 const searchResults = ref<any[]>([]);
 const showDetailModal = ref(false);
 const selectedItem = ref<any>(null);
+
+// 图谱视图相关
+const graphSearchKeyword = ref('');
+const graphEntityName = ref('');
+const graphEntityType = ref<string | undefined>(undefined);
+const graphExamples = ['糖尿病', '高血压', '感冒', '阿司匹林', '头痛'];
 
 // 推荐知识（页面加载时显示）
 const recommendedKnowledge = ref<any[]>([]);
@@ -316,6 +380,29 @@ const askAbout = (name: string) => {
   });
 };
 
+// 图谱搜索
+const handleGraphSearch = () => {
+  if (!graphSearchKeyword.value.trim()) {
+    showToast('请输入实体名称', 'warning');
+    return;
+  }
+  graphEntityName.value = graphSearchKeyword.value.trim();
+  graphEntityType.value = undefined;
+};
+
+const searchGraph = (keyword: string) => {
+  graphSearchKeyword.value = keyword;
+  handleGraphSearch();
+};
+
+const handleGraphNodeClick = (nodeData: any) => {
+  console.log('图谱节点点击:', nodeData);
+  // 可以打开详情弹窗或切换到该节点的图谱
+  if (nodeData && nodeData.name) {
+    graphEntityName.value = nodeData.name;
+  }
+};
+
 // 加载推荐知识
 const loadRecommendedKnowledge = async () => {
   try {
@@ -354,6 +441,32 @@ onMounted(() => {
     color: #333;
   }
 
+  .view-tabs {
+    display: flex;
+    gap: 12px;
+
+    .tab-btn {
+      padding: 8px 24px;
+      background: #f5f5f5;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 15px;
+      color: #666;
+
+      &:hover {
+        background: #e8e8e8;
+      }
+
+      &.active {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+      }
+    }
+  }
+
   .btn-back {
     padding: 8px 20px;
     background: #667eea;
@@ -373,6 +486,97 @@ onMounted(() => {
   max-width: 1000px;
   margin: 0 auto;
   padding: 24px 20px;
+}
+
+.search-view,
+.graph-view {
+  width: 100%;
+}
+
+.graph-view {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  min-height: 700px;
+  height: calc(100vh - 250px);
+
+  .graph-search {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    input {
+      flex: 1;
+      padding: 14px 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+    }
+
+    .btn-search {
+      padding: 14px 32px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        background: #5568d3;
+      }
+    }
+  }
+
+  .graph-intro {
+    text-align: center;
+    padding: 80px 20px;
+
+    .intro-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 32px;
+    }
+
+    .example-searches {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      .example-tag {
+        padding: 8px 20px;
+        background: #f5f5f5;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+
+        &:hover {
+          background: #667eea;
+          color: white;
+        }
+      }
+    }
+  }
 }
 
 .search-section {
