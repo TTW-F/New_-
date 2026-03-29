@@ -4,7 +4,6 @@
 处理对话历史查询和管理的 API 端点
 """
 
-import logging
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import Optional
@@ -22,8 +21,8 @@ from api.schemas.auth import ErrorResponse
 from api.services.conversation_service import ConversationService
 from api.security.jwt import get_current_user
 from api.models.user import User
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/history", tags=["对话历史"])
 

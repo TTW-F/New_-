@@ -4,15 +4,14 @@
 基于 slowapi 实现请求速率限制
 """
 
-import logging
 from fastapi import Request, HTTPException, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from api.core.config import settings
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 
 def get_rate_limit_key(request: Request) -> str:

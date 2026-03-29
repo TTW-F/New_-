@@ -13,7 +13,6 @@ import pymysql
 from pymysql.cursors import DictCursor
 import re
 import time
-import logging
 import json
 import os
 import random
@@ -24,14 +23,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
 import threading
 
-load_dotenv()
+# 使用新的日志系统
+from api.core.logger import logger
 
-# 配置日志
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+load_dotenv()
 
 # 进度文件配置
 PROGRESS_FILE = os.path.join(os.path.dirname(__file__), 'spider_progress.json')

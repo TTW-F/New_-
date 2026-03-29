@@ -3,12 +3,11 @@
 """
 
 import json
-import logging
+from api.core.logger import logger
 from typing import Dict, List, Optional, Callable, Any
 
 from .schemas import Tool
 
-logger = logging.getLogger(__name__)
 
 
 class ToolRegistry:

@@ -4,7 +4,6 @@ FastAPI 应用主入口
 医疗诊断智能问答系统 API 服务
 """
 
-import logging
 import time
 from pathlib import Path
 from fastapi import FastAPI, Request, HTTPException, status
@@ -18,33 +17,39 @@ from slowapi.errors import RateLimitExceeded
 
 from api.core.config import settings
 from api.core.database import init_db
+from api.core.logger import logger, console
 from api.security.rate_limit import limiter
+from rich.panel import Panel
+import logging
 
 # 获取项目根目录
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 配置日志
-logging.basicConfig(
-    level=logging.INFO if not settings.DEBUG else logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
 # 禁用第三方库的详细日志
 logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
+logging.getLogger("uvicorn.error").setLevel(logging.WARNING)
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
-logging.getLogger("neo4j.notifications").setLevel(logging.ERROR)
+logging.getLogger("neo4j").setLevel(logging.ERROR)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
     # 启动时
+    console.print(Panel(
+        f"[bold green]🚀 {settings.APP_NAME}[/bold green]\n"
+        f"版本: v{settings.APP_VERSION}\n"
+        f"API: http://{settings.API_HOST}:{settings.API_PORT}\n"
+        f"文档: http://{settings.API_HOST}:{settings.API_PORT}/docs",
+        title="系统启动",
+        border_style="green"
+    ))
     logger.info(f"启动 {settings.APP_NAME} v{settings.APP_VERSION}")
     init_db()
     yield
     # 关闭时
-    logger.info("应用关闭")
+    logger.warning("应用关闭")
+    console.print("[yellow]👋 系统已关闭[/yellow]")
 
 
 # 创建 FastAPI 应用
@@ -98,17 +103,48 @@ async def log_requests(request: Request, call_next):
     # 获取客户端 IP
     client_ip = request.client.host if request.client else "unknown"
     
+    # 获取请求信息
+    method = request.method
+    path = request.url.path
+    query_params = str(request.query_params) if request.query_params else ""
+    
+    # 绑定请求上下文
+    req_logger = logger.bind(
+        method=method,
+        path=path,
+        ip=client_ip,
+        query=query_params
+    )
+    
+    # 记录请求开始
+    req_logger.info(f"→ {method} {path}{('?' + query_params) if query_params else ''}")
+    
     response = await call_next(request)
     
     process_time = (time.time() - start_time) * 1000
     
-    # 记录请求日志
-    logger.info(
-        f"{request.method} {request.url.path} - "
-        f"IP: {client_ip} - "
-        f"Status: {response.status_code} - "
-        f"Time: {process_time:.2f}ms"
-    )
+    # 根据状态码选择日志级别
+    status_code = response.status_code
+    if status_code >= 500:
+        req_logger.bind(
+            status=status_code,
+            time_ms=f"{process_time:.2f}"
+        ).error(f"← {status_code} | {process_time:.2f}ms")
+    elif status_code >= 400:
+        req_logger.bind(
+            status=status_code,
+            time_ms=f"{process_time:.2f}"
+        ).warning(f"← {status_code} | {process_time:.2f}ms")
+    elif status_code >= 300:
+        req_logger.bind(
+            status=status_code,
+            time_ms=f"{process_time:.2f}"
+        ).info(f"← {status_code} | {process_time:.2f}ms")
+    else:
+        req_logger.bind(
+            status=status_code,
+            time_ms=f"{process_time:.2f}"
+        ).success(f"← {status_code} | {process_time:.2f}ms")
     
     response.headers["X-Process-Time"] = f"{process_time:.2f}ms"
     return response

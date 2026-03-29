@@ -5,20 +5,15 @@
 
 import os
 import json
-import logging
 from typing import Dict, List, Optional
 from neo4j import GraphDatabase
 from dotenv import load_dotenv
 from tqdm import tqdm
 
-load_dotenv()
+# 使用新的日志系统
+from api.core.logger import logger
 
-# 配置日志
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+load_dotenv()
 
 
 class Neo4jImporter:

@@ -4,7 +4,6 @@
 提供系统管理相关的 API 接口
 """
 
-import logging
 from typing import Optional
 from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -15,9 +14,9 @@ from api.core.database import get_db
 from api.models.user import User, UserType
 from api.models.conversation import ConversationHistory, Feedback
 from api.security.jwt import get_current_user
+from api.core.logger import logger
 from pydantic import BaseModel
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -129,7 +128,7 @@ async def get_stats(
             "system_status": "running"
         }
     except Exception as e:
-        logger.error(f"获取统计数据失败: {e}", exc_info=True)
+        logger.bind(admin_id=_admin.id).exception("获取统计数据失败")
         raise HTTPException(status_code=500, detail="获取统计数据失败")
 
 
@@ -166,9 +165,9 @@ async def get_users(
         # 获取总数
         total = query.count()
         
-        # 分页
+        # 分页 - ID 升序排列（小的在前）
         offset = (page - 1) * page_size
-        users = query.order_by(desc(User.created_at)).offset(offset).limit(page_size).all()
+        users = query.order_by(User.id.asc()).offset(offset).limit(page_size).all()
         
         return {
             "users": [
@@ -187,7 +186,7 @@ async def get_users(
             "page_size": page_size
         }
     except Exception as e:
-        logger.error(f"获取用户列表失败: {e}", exc_info=True)
+        logger.bind(admin_id=_admin.id).exception("获取用户列表失败")
         raise HTTPException(status_code=500, detail="获取用户列表失败")
 
 
@@ -343,7 +342,7 @@ async def get_conversations(
             "page_size": page_size
         }
     except Exception as e:
-        logger.error(f"获取对话列表失败: {e}", exc_info=True)
+        logger.bind(admin_id=_admin.id).exception("获取对话列表失败")
         raise HTTPException(status_code=500, detail="获取对话列表失败")
 
 
@@ -439,4 +438,79 @@ async def get_logs(
         "total": len(logs),
         "page": page,
         "page_size": page_size
+    }
+
+
+@router.put("/users/{user_id}/toggle-status")
+async def toggle_user_status(
+    user_id: int,
+    db: Session = Depends(get_db),
+    _admin: User = Depends(require_admin)
+):
+    """
+    切换用户状态（启用/禁用）
+    
+    Args:
+        user_id: 用户 ID
+        
+    Returns:
+        更新后的用户信息
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    
+    # 不允许禁用自己
+    if user.user_type == UserType.admin:
+        raise HTTPException(status_code=403, detail="不能禁用管理员账号")
+    
+    # 切换状态
+    user.is_active = not user.is_active
+    db.commit()
+    db.refresh(user)
+    
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "user_type": user.user_type.value,
+        "is_active": user.is_active,
+        "created_at": user.created_at.isoformat()
+    }
+
+
+@router.delete("/users/{user_id}")
+async def delete_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_admin: User = Depends(require_admin)
+):
+    """
+    删除用户
+    
+    Args:
+        user_id: 用户 ID
+        
+    Returns:
+        删除结果
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    
+    # 不允许删除管理员
+    if user.user_type == UserType.admin:
+        raise HTTPException(status_code=403, detail="不能删除管理员账号")
+    
+    # 不允许删除自己
+    if user.id == current_admin.id:
+        raise HTTPException(status_code=403, detail="不能删除自己")
+    
+    # 删除用户
+    db.delete(user)
+    db.commit()
+    
+    return {
+        "message": f"用户 {user.username} 已删除",
+        "user_id": user_id
     }

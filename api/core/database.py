@@ -10,11 +10,10 @@ from sqlalchemy.orm import sessionmaker, Session
 from contextlib import contextmanager
 from typing import Generator
 import redis
-import logging
 
 from api.core.config import settings
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 # SQLAlchemy 配置
 engine = create_engine(
@@ -23,7 +22,7 @@ engine = create_engine(
     pool_recycle=3600,
     pool_size=10,
     max_overflow=20,
-    echo=settings.DEBUG
+    echo=False  # 禁用 SQL 日志
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

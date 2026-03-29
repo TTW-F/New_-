@@ -5,8 +5,8 @@
 """
 
 import os
+from api.core.logger import logger
 import json
-import logging
 from typing import Dict, List, Optional, Union, Generator, Any
 from datetime import datetime
 
@@ -21,7 +21,6 @@ from .schemas import (
 from .tools import ToolRegistry, create_default_registry
 from .memory import ConversationMemory
 
-logger = logging.getLogger(__name__)
 
 
 class MedicalAgent:
@@ -74,7 +73,11 @@ class MedicalAgent:
         # 初始化对话记忆
         self.memory = ConversationMemory(max_messages=memory_limit)
         
-        logger.info(f"MedicalAgent 初始化完成: model={self.model}, tools={len(self.tool_registry)}")
+        logger.bind(
+            model=self.model,
+            tools_count=len(self.tool_registry),
+            max_iterations=max_iterations
+        ).success("MedicalAgent 初始化完成")
     
     def chat(
         self,
@@ -107,7 +110,7 @@ class MedicalAgent:
             else:
                 return self._chat_sync(message)
         except Exception as e:
-            logger.error(f"Agent 处理失败: {e}", exc_info=True)
+            logger.bind(message_length=len(message)).exception("Agent 处理失败")
             error_response = AgentResponse(
                 answer=f"抱歉，处理您的问题时出现错误。请稍后重试。",
                 error=str(e)
@@ -237,7 +240,10 @@ class MedicalAgent:
                         }
                         
                     except Exception as e:
-                        logger.error(f"工具执行失败: {e}")
+                        logger.bind(
+                            tool_name=tool_name,
+                            error=str(e)
+                        ).error(f"❌ 工具执行失败: {tool_name}")
                         result = json.dumps({
                             "error": str(e),
                             "message": "工具执行失败"
@@ -300,7 +306,7 @@ class MedicalAgent:
             }
             
         except Exception as e:
-            logger.error(f"流式输出失败: {e}", exc_info=True)
+            logger.exception("流式输出失败")
             yield {"type": "error", "message": str(e)}
             self.memory.add_message("assistant", f"抱歉，生成回答时出现错误: {str(e)}")
     
@@ -324,7 +330,10 @@ class MedicalAgent:
         entities: List[Dict] = []
         
         for iteration in range(self.max_iterations):
-            logger.debug(f"Agent Loop 迭代 {iteration + 1}/{self.max_iterations}")
+            logger.bind(
+                iteration=iteration + 1,
+                max_iterations=self.max_iterations
+            ).info(f"🔄 Agent 推理迭代 {iteration + 1}/{self.max_iterations}")
             
             # 调用 LLM
             response = self._call_llm(messages)
@@ -373,7 +382,11 @@ class MedicalAgent:
                 except json.JSONDecodeError:
                     arguments = {}
                 
-                logger.info(f"执行工具: {tool_name}, 参数: {arguments}")
+                logger.bind(
+                    tool_name=tool_name,
+                    arguments=arguments,
+                    iteration=iteration + 1
+                ).info(f"🔧 调用工具: {tool_name}")
                 
                 # 记录工具调用
                 tc_record = ToolCall(
@@ -390,7 +403,10 @@ class MedicalAgent:
                     self._extract_entities(result, entities)
                     
                 except Exception as e:
-                    logger.error(f"工具执行失败: {e}")
+                    logger.bind(
+                        tool_name=tool_name,
+                        error=str(e)
+                    ).error(f"❌ 工具执行失败: {tool_name}")
                     result = json.dumps({
                         "error": str(e),
                         "message": "工具执行失败，请尝试其他方式"
@@ -407,7 +423,7 @@ class MedicalAgent:
                 })
         
         # 达到最大迭代次数
-        logger.warning(f"达到最大迭代次数 {self.max_iterations}")
+        logger.bind(max_iterations=self.max_iterations).warning(f"⚠️ 达到最大迭代次数")
         return AgentResponse(
             answer="抱歉，我需要更多信息来回答您的问题。请尝试提供更具体的症状或疾病名称。",
             tool_calls=tool_calls_history,

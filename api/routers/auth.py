@@ -4,7 +4,6 @@
 处理用户注册、登录、登出等认证相关的 API 端点
 """
 
-import logging
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -27,8 +26,8 @@ from api.security.jwt import (
     blacklist_token
 )
 from api.models.user import User
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/auth", tags=["认证"])
 
@@ -130,7 +129,11 @@ async def login(
     access_token = create_access_token(data={"sub": user.id})
     expires_in = settings.JWT_ACCESS_TOKEN_EXPIRE_HOURS * 3600
     
-    logger.info(f"用户登录成功: {user.username}")
+    logger.bind(
+        username=user.username,
+        user_id=user.id,
+        user_type=user.user_type.value
+    ).success("用户登录成功")
     
     return TokenResponse(
         access_token=access_token,
@@ -215,7 +218,10 @@ async def logout(
         token = auth_header[7:]
         blacklist_token(db, token, current_user.id)
     
-    logger.info(f"用户登出: {current_user.username}")
+    logger.bind(
+        username=current_user.username,
+        user_id=current_user.id
+    ).info("用户登出")
     
     return LogoutResponse(
         status="success",
@@ -296,7 +302,10 @@ async def change_password(
             detail="密码修改失败"
         )
     
-    logger.info(f"用户修改密码: {current_user.username}")
+    logger.bind(
+        username=current_user.username,
+        user_id=current_user.id
+    ).success("用户修改密码")
     
     return LogoutResponse(
         status="success",

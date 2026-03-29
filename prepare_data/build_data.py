@@ -8,19 +8,14 @@ from pymysql.cursors import DictCursor
 from lxml import etree
 import os
 from max_cut import CutWords
-import logging
 import json
 from typing import Dict, List, Optional
 from dotenv import load_dotenv
 
-load_dotenv()
+# 使用新的日志系统
+from api.core.logger import logger
 
-# 配置日志
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+load_dotenv()
 
 class MedicalGraph:
     def __init__(self, output_format='json'):

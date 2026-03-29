@@ -3,8 +3,9 @@ import json
 from typing import List, Dict, Optional
 from neo4j import GraphDatabase
 from dotenv import load_dotenv
-import logging
-logger = logging.getLogger(__name__)
+
+# 使用新的日志系统
+from api.core.logger import logger
 
 load_dotenv()
 
@@ -242,6 +243,12 @@ class Neo4jService:
         Returns:
             匹配的实体列表
         """
+        logger.bind(
+            keyword=keyword,
+            entity_type=entity_type,
+            limit=limit
+        ).info(f"🔍 模糊搜索: {keyword}")
+        
         if entity_type:
             query = f"""
             MATCH (n:{entity_type})
@@ -272,6 +279,11 @@ class Neo4jService:
                     "description": record.get("description"),
                     "type": record["type"]
                 })
+            
+            logger.bind(
+                keyword=keyword,
+                results_count=len(entities)
+            ).info(f"✓ 搜索完成,找到 {len(entities)} 个结果")
             
             return entities
 

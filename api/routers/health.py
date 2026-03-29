@@ -4,15 +4,14 @@
 提供系统健康状态监控端点
 """
 
-import logging
 from fastapi import APIRouter, status
 from pydantic import BaseModel
 from typing import Dict, Optional
 
 from api.core.config import settings
 from api.core.database import check_db_connection, check_redis_connection
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["健康检查"])
 

@@ -5,6 +5,7 @@
 """
 
 import os
+from api.core.logger import logger
 from pathlib import Path
 from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict

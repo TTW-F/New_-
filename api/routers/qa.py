@@ -5,7 +5,6 @@
 使用 MedicalAgent 提供智能问答服务
 """
 
-import logging
 import json
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
@@ -16,8 +15,8 @@ from api.schemas.qa import QARequest, QAResponse, QAErrorResponse
 from api.services.qa_service import QAService
 from api.security.jwt import get_current_user_optional
 from api.models.user import User
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/qa", tags=["问答"])
 
@@ -57,6 +56,13 @@ async def ask_question(
     qa_service = QAService(db)
     user_id = current_user.id if current_user else None
     
+    # 记录问答请求
+    logger.bind(
+        user_id=user_id,
+        question_length=len(request.question),
+        session_id=request.session_id
+    ).info(f"收到问答请求: {request.question[:50]}...")
+    
     try:
         result = qa_service.process_question(
             question=request.question,
@@ -65,7 +71,10 @@ async def ask_question(
         )
         
         if "error" in result:
-            logger.warning(f"问答处理出现错误: {result.get('error')}")
+            logger.bind(
+                question_id=result["question_id"],
+                session_id=result["session_id"]
+            ).warning(f"问答处理出现错误: {result.get('error')}")
         
         return QAResponse(
             question_id=result["question_id"],
@@ -78,14 +87,14 @@ async def ask_question(
         )
         
     except RuntimeError as e:
-        logger.error(f"MedicalAgent 服务错误: {e}")
+        logger.bind(user_id=user_id).error(f"MedicalAgent 服务错误: {e}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="问答服务暂时不可用，请稍后重试"
         )
         
     except Exception as e:
-        logger.error(f"问答处理失败: {e}", exc_info=True)
+        logger.bind(user_id=user_id).exception("问答处理失败")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="处理问题时发生错误"
@@ -114,6 +123,13 @@ async def ask_question_stream(
     """
     qa_service = QAService(db)
     user_id = current_user.id if current_user else None
+    
+    # 记录流式问答请求
+    logger.bind(
+        user_id=user_id,
+        question_length=len(request.question),
+        session_id=request.session_id
+    ).info(f"收到流式问答请求: {request.question[:50]}...")
     
     async def generate():
         try:

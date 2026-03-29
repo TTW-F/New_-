@@ -5,11 +5,10 @@
 """
 
 import re
+from api.core.logger import logger
 import html
-import logging
 from typing import Any, Dict, List, Union
 
-logger = logging.getLogger(__name__)
 
 
 class InputSanitizer:

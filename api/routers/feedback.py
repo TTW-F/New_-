@@ -4,7 +4,6 @@
 处理用户反馈相关的 API 端点
 """
 
-import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -18,8 +17,8 @@ from api.schemas.auth import ErrorResponse
 from api.services.conversation_service import ConversationService
 from api.security.jwt import get_current_user
 from api.models.user import User
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/feedback", tags=["反馈"])
 

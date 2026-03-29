@@ -2,12 +2,11 @@
 对话记忆管理模块
 """
 
-import logging
 from typing import List, Dict, Any, Optional
+from api.core.logger import logger
 from datetime import datetime
 from collections import deque
 
-logger = logging.getLogger(__name__)
 
 
 class ConversationMemory:

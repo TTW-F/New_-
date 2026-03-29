@@ -4,7 +4,6 @@ JWT 认证模块
 处理 JWT Token 的创建、验证和管理
 """
 
-import logging
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 from jose import JWTError, jwt
@@ -15,8 +14,8 @@ from sqlalchemy.orm import Session
 from api.core.config import settings
 from api.core.database import get_db
 from api.models.user import User, TokenBlacklist
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 # OAuth2 密码流
 oauth2_scheme = OAuth2PasswordBearer(

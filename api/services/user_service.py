@@ -5,15 +5,14 @@
 """
 
 import re
-import logging
 import hashlib
 from typing import Optional, Tuple
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
 from api.models.user import User, UserType
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 # 使用 bcrypt 直接处理密码
 try:
@@ -185,12 +184,19 @@ class UserService:
             self.db.commit()
             self.db.refresh(user)
             
-            logger.info(f"用户注册成功: {username}")
+            # 使用结构化日志记录用户注册
+            logger.bind(
+                username=username,
+                email=email,
+                user_type=user_type,
+                user_id=user.id
+            ).success("用户注册成功")
             return user, None
             
         except IntegrityError as e:
             self.db.rollback()
-            logger.error(f"用户注册失败 (数据库错误): {e}")
+            # 使用 warning 级别记录数据库冲突
+            logger.bind(username=username, email=email).warning(f"用户注册失败 (数据库冲突): {str(e.orig)[:100]}")
             
             # 解析具体的冲突字段
             error_str = str(e.orig).lower()
@@ -203,7 +209,7 @@ class UserService:
                 
         except Exception as e:
             self.db.rollback()
-            logger.error(f"用户注册失败: {e}", exc_info=True)
+            logger.bind(username=username).exception("用户注册失败")
             return None, "注册失败，请稍后重试"
     
     def authenticate(self, username: str, password: str) -> Optional[User]:
@@ -230,10 +236,15 @@ class UserService:
         
         # 验证密码
         if not self.verify_password(password, user.password_hash):
-            logger.debug(f"密码错误: {username}")
+            logger.bind(username=username).debug("密码验证失败")
             return None
         
-        logger.info(f"用户认证成功: {username}")
+        # 使用结构化日志记录成功登录
+        logger.bind(
+            username=username,
+            user_id=user.id,
+            user_type=user.user_type.value
+        ).success("用户认证成功")
         return user
     
     def get_user_by_id(self, user_id: int) -> Optional[User]:
@@ -330,18 +341,7 @@ class UserService:
         self.db.commit()
         return True
     
-    def verify_password(self, user: User, password: str) -> bool:
-        """
-        验证用户密码
-        
-        Args:
-            user: 用户对象
-            password: 明文密码
-            
-        Returns:
-            密码是否正确
-        """
-        return self.verify_password(password, user.password_hash)
+
     
     def change_password(self, user: User, new_password: str) -> bool:
         """
@@ -357,11 +357,11 @@ class UserService:
         try:
             user.password_hash = self.hash_password(new_password)
             self.db.commit()
-            logger.info(f"用户密码已修改: {user.username}")
+            logger.bind(username=user.username, user_id=user.id).success("用户密码已修改")
             return True
         except Exception as e:
             self.db.rollback()
-            logger.error(f"修改密码失败: {e}", exc_info=True)
+            logger.bind(username=user.username).exception("修改密码失败")
             return False
 
 

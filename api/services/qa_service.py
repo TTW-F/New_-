@@ -5,15 +5,14 @@
 支持会话级别的 Agent 实例管理和真正的流式输出
 """
 
-import logging
 import time
 import uuid
 from typing import Optional, Dict, Any, Generator
 from sqlalchemy.orm import Session
 
 from api.services.conversation_service import ConversationService
+from api.core.logger import logger
 
-logger = logging.getLogger(__name__)
 
 
 # 会话级别的 Agent 实例缓存
@@ -56,9 +55,13 @@ class QAService:
                     base_url=settings.DEEPSEEK_BASE_URL,
                     model=settings.DEEPSEEK_MODEL
                 )
-                logger.info(f"为会话 {session_id} 创建新的 MedicalAgent 实例")
+                # 使用结构化日志记录会话创建
+                logger.bind(
+                    session_id=session_id,
+                    agent_count=len(_session_agents)
+                ).success(f"创建新的 MedicalAgent 实例")
             except Exception as e:
-                logger.error(f"MedicalAgent 初始化失败: {e}")
+                logger.bind(session_id=session_id).error(f"MedicalAgent 初始化失败: {e}")
                 raise RuntimeError(f"问答服务不可用: {e}")
         
         return _session_agents[session_id]
@@ -150,11 +153,21 @@ class QAService:
         if not session_id:
             session_id = str(uuid.uuid4())[:16]
         
+        # 创建带上下文的日志记录器
+        req_logger = logger.bind(
+            question_id=question_id,
+            session_id=session_id,
+            user_id=user_id
+        )
+        
+        req_logger.info(f"收到问答请求: {question[:50]}...")
+        
         try:
             # 获取会话对应的 Agent
             agent = self._get_agent(session_id)
             
             # 调用 Agent 处理问题
+            req_logger.debug("调用 MedicalAgent 处理问题")
             result = agent.chat(question, stream=False)
             
             # 计算响应时间
@@ -207,11 +220,15 @@ class QAService:
                     response=response
                 )
             
-            logger.info(f"问答处理完成: question_id={question_id}, time={response_time_ms}ms")
+            req_logger.bind(
+                response_time_ms=response_time_ms,
+                entities_count=len(entities),
+                tool_calls_count=len(result.tool_calls)
+            ).success(f"问答处理完成")
             return response
             
         except Exception as e:
-            logger.error(f"问答处理失败: {e}", exc_info=True)
+            req_logger.exception(f"问答处理失败: {e}")
             
             # 计算响应时间
             response_time_ms = int((time.time() - start_time) * 1000)
